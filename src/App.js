@@ -1,28 +1,54 @@
-import { Images } from './Components/Images';
-import { useState } from 'react';
-import axios from 'axios';
+import React from "react";
+ import ReactDOM from "react-dom";
 
 
-
-function App() {
-
-  const [images, setImages] = useState([]);
-
-const fetchAPI=async() => {
-    const response = await axios.get ('https://api.unsplash.com/photos/?client_id=M89cfeC8vU-Y_NmfncajDE94NOZOxKpaz0fWZuuDmQc');
-    const data = await response.data;
-    setImages(data);
+let url = "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350";
+ 
+ function App() {
+   return (
+     <img 
+      src={url}
+      alt="new"
+      />
+   );
+   function getElementPosition(obj) {
+    let curleft = 0, curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return { x: curleft, y: curtop };
+    }
+    return undefined;
 }
-  return (
-    <div className='container'>
-      <button className="btn" onClick={fetchAPI}>FETCH</button>
-      <div className='photos'>
-        {images.length>0&&(
-          <Images images= {images}/>
-        )}
-      </div>
-    </div>
-  );
+function getEventLocation(element,event){
+  let pos = getElementPosition(element);
+  
+  return {
+    x: (event.pageX - pos.x),
+      y: (event.pageY - pos.y)
+  };
+}
+let canvas = document.getElementById("canvas");
+
+
+function drawImageFromWebUrl(sourceurl){
+    let img = new Image();
+
+    img.addEventListener("load", function () {
+        canvas.getContext("2d").drawImage(img, 0, 0, img.width,    img.height, 0, 0, canvas.width, canvas.height); 
+    });
+
+   img.setAttribute("src", sourceurl);
+}
+function rgbToHex(r,g,b){
+    if()
 }
 
-export default App;
+
+ }
+
+ const rootElement = document.getElementById("root");
+ ReactDOM.render(<App />, rootElement);
+ export default App
